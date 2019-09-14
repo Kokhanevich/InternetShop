@@ -13,8 +13,7 @@ import mate.academy.internetshop.service.UserService;
 public class Main {
     static {
         try {
-            Injector.injectServiceClasses();
-            Injector.injectMainClass();
+            Injector.inject();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }

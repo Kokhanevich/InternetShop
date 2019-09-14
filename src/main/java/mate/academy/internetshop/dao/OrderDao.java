@@ -12,5 +12,5 @@ public interface OrderDao {
 
     void delete(Long id);
 
-    void deleteByItem(Order order);
+    void delete(Order order);
 }

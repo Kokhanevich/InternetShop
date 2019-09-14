@@ -12,5 +12,5 @@ public interface UserDao {
 
     void delete(Long id);
 
-    void deleteByItem(User user);
+    void delete(User user);
 }

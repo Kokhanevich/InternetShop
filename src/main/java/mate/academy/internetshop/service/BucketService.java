@@ -3,6 +3,7 @@ package mate.academy.internetshop.service;
 import java.util.List;
 
 import mate.academy.internetshop.model.Bucket;
+import mate.academy.internetshop.model.Item;
 
 public interface BucketService {
 
@@ -12,13 +13,13 @@ public interface BucketService {
 
     Bucket update(Bucket bucket);
 
-    void deleteById(Long bucketId);
+    void delete(Long bucketId);
 
-    void deleteByBucket(Bucket bucket);
+    void delete(Bucket bucket);
 
     Bucket addItem(Long bucketId, Long itemId);
 
     Bucket clear(Long bucketId);
 
-    List getAllItems(Long bucketId);
+    List<Item> getAllItems(Long bucketId);
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.lib.Service;
+import mate.academy.internetshop.model.Order;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.UserService;
 
@@ -35,12 +36,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteByItem(User user) {
-        userDao.deleteByItem(user);
+    public void delete(User user) {
+        userDao.delete(user);
     }
 
     @Override
-    public List getOrders(Long userId) {
+    public List<Order> getOrders(Long userId) {
         User user = userDao.get(userId);
         return user.getOrders();
     }

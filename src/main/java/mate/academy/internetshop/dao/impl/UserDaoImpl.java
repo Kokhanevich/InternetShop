@@ -41,7 +41,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void deleteByItem(User user) {
+    public void delete(User user) {
         Storage.users.removeIf(elem -> elem.equals(user));
     }
 }

@@ -14,7 +14,7 @@ public interface OrderService {
 
     void delete(Long id);
 
-    void deleteByItem(Order order);
+    void delete(Order order);
 
     Order completeOrder(List items, Long userId);
 }

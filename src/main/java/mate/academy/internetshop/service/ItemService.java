@@ -12,5 +12,5 @@ public interface ItemService {
 
     void delete(Long id);
 
-    void deleteByItem(Item item);
+    void delete(Item item);
 }
