@@ -1,21 +1,16 @@
 package mate.academy.internetshop.controller;
 
 import java.io.IOException;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import mate.academy.internetshop.lib.Inject;
-import mate.academy.internetshop.model.Item;
+import mate.academy.internetshop.model.Bucket;
 import mate.academy.internetshop.service.BucketService;
-import mate.academy.internetshop.service.OrderService;
 
-public class CreateOrderController extends HttpServlet {
-
-    @Inject
-    private static OrderService orderService;
+public class AddItemToBucketController extends HttpServlet {
+    private Bucket bucket = new Bucket();
 
     @Inject
     private static BucketService bucketService;
@@ -23,10 +18,9 @@ public class CreateOrderController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        //String bucketId = req.getParameter("bucket_id");
-        List<Item> allItems = bucketService.getAllItems(0L);
-        orderService.completeOrder(allItems, 0L);
-        bucketService.clear(0L);
+        bucketService.create(bucket);
+        String item_id = req.getParameter("item_id");
+        bucketService.addItem(bucket.getId(), Long.valueOf(item_id));
         resp.sendRedirect(req.getContextPath() + "/servlet/getAllItems");
     }
 }

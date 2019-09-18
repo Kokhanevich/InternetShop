@@ -12,13 +12,15 @@ import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.service.BucketService;
 
 public class GetBucketController extends HttpServlet {
+
+    private static final Long BUCKET_ID = 0L;
     @Inject
     private static BucketService bucketService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        List<Item> items = bucketService.getAllItems(0L);
+        List<Item> items = bucketService.getAllItems(BUCKET_ID);
         req.setAttribute("items", items);
         req.getRequestDispatcher("/WEB-INF/views/bucket.jsp").forward(req, resp);
     }
