@@ -13,7 +13,7 @@ import mate.academy.internetshop.service.UserService;
 public class Main {
     static {
         try {
-            Injector.inject();
+            Injector.injectDependency();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -26,7 +26,6 @@ public class Main {
     private static BucketService bucketService;
 
     @Inject
-
     private static ItemService itemService;
 
     @Inject
@@ -45,6 +44,7 @@ public class Main {
         itemService.create(phone);
 
         User user = new User();
+        user.setName("Bob");
         userService.create(user);
 
         Bucket bucket = new Bucket();

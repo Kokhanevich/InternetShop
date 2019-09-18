@@ -18,4 +18,6 @@ public interface UserService {
     void delete(User user);
 
     List<Order> getOrders(Long userId);
+
+    List<User> getAll();
 }
