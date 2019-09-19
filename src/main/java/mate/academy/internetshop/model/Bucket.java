@@ -15,6 +15,11 @@ public class Bucket {
         this.items = new ArrayList<>();
     }
 
+    public Bucket(User user) {
+        this();
+        this.user = user;
+    }
+
     public Long getId() {
         return id;
     }

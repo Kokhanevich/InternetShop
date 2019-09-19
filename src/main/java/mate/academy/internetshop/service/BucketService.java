@@ -22,4 +22,6 @@ public interface BucketService {
     Bucket clear(Long bucketId);
 
     List<Item> getAllItems(Long bucketId);
+
+    void deleteItem(Item item, Long bucketId);
 }

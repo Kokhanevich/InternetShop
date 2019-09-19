@@ -11,6 +11,12 @@ public class Item {
         this.id = ItemIdGenerator.getGeneratedId();
     }
 
+    public Item(String name, Double prise) {
+        this();
+        this.name = name;
+        this.prise = prise;
+    }
+
     public Long getId() {
         return id;
     }
