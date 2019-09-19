@@ -13,7 +13,7 @@ import mate.academy.internetshop.service.ItemService;
 
 public class DeleteItemFromBucketController extends HttpServlet {
 
-    private static final Long Bucket_ID = 0L;
+    private static final Long BUCKET_ID = 0L;
 
     @Inject
     private static BucketService bucketService;
@@ -25,7 +25,7 @@ public class DeleteItemFromBucketController extends HttpServlet {
             throws ServletException, IOException {
         String item_id = req.getParameter("item_id");
         Item item = itemService.get(Long.parseLong(item_id));
-        bucketService.deleteItem(item, Bucket_ID);
+        bucketService.deleteItem(item, BUCKET_ID);
         resp.sendRedirect(req.getContextPath() + "/servlet/getBucket");
     }
 }
