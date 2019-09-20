@@ -13,11 +13,9 @@ import mate.academy.internetshop.service.OrderService;
 import mate.academy.internetshop.service.UserService;
 
 public class DeleteOrderController extends HttpServlet {
-
-    private static final Long USER_ID = 0L;
-
     @Inject
     private static OrderService orderService;
+
     @Inject
     private static UserService userService;
 
@@ -26,7 +24,8 @@ public class DeleteOrderController extends HttpServlet {
             throws ServletException, IOException {
         String orderId = req.getParameter("order_id");
         Order order = orderService.get(Long.valueOf(orderId));
-        User user = userService.get(USER_ID);
+        Long userId = (Long) req.getSession(true).getAttribute("userId");
+        User user = userService.get(userId);
         orderService.delete(Long.valueOf(orderId));
         user.getOrders().remove(order);
         resp.sendRedirect(req.getContextPath() + "/servlet/getOrders");

@@ -12,7 +12,6 @@ import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.UserService;
 
 public class GetAllUsersController extends HttpServlet {
-
     @Inject
     private static UserService userService;
 
