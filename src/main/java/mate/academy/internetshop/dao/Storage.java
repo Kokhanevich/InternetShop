@@ -2,6 +2,7 @@ package mate.academy.internetshop.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import mate.academy.internetshop.model.Bucket;
 import mate.academy.internetshop.model.Item;
@@ -23,5 +24,21 @@ public class Storage {
         items.add(new Item("Meizu D300", 4000D));
         items.add(new Item("iPhone X", 25000D));
         items.add(new Item("Samsung Note A7", 15000D));
+    }
+
+    static {
+        User user1 = new User("Mykola");
+        user1.setLogin("Nick95");
+        user1.setPassword("111");
+        user1.setSurname("Gava");
+        user1.setToken(UUID.randomUUID().toString());
+        users.add(user1);
+
+        User user2 = new User("Bob");
+        user2.setLogin("Bob95");
+        user2.setPassword("222");
+        user2.setSurname("Gavan");
+        user2.setToken(UUID.randomUUID().toString());
+        users.add(user2);
     }
 }

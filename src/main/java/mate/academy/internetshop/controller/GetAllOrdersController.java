@@ -12,16 +12,14 @@ import mate.academy.internetshop.model.Order;
 import mate.academy.internetshop.service.UserService;
 
 public class GetAllOrdersController extends HttpServlet {
-
-    private static final Long USER_ID = 0L;
-
     @Inject
     private static UserService userService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        List<Order> orders = userService.getOrders(USER_ID);
+        Long userId = (Long) req.getSession(true).getAttribute("userId");
+        List<Order> orders = userService.getOrders(userId);
         req.setAttribute("orders", orders);
         req.getRequestDispatcher("/WEB-INF/views/orders.jsp").forward(req, resp);
 

@@ -13,10 +13,12 @@ public class User {
     private String surname;
     private String login;
     private String password;
+    private String token;
 
     public User() {
         this.id = UserIdGenerator.getGeneratedId();
         this.orders = new ArrayList<>();
+        this.bucket = new Bucket(this);
     }
 
     public User(String name) {
@@ -74,6 +76,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     @Override

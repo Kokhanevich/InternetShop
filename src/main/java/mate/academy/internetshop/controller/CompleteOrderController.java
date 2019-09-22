@@ -9,13 +9,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Item;
+import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.OrderService;
 import mate.academy.internetshop.service.UserService;
 
 public class CompleteOrderController extends HttpServlet {
-    private static final Long USER_ID = 0L;
-    private static final Long BUCKET_ID = 0L;
+    @Inject
+    private static UserService userService;
+
     @Inject
     private static OrderService orderService;
 
@@ -25,9 +27,11 @@ public class CompleteOrderController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        List<Item> allItems = bucketService.getAllItems(BUCKET_ID);
-        orderService.completeOrder(allItems, USER_ID);
-        bucketService.clear(BUCKET_ID);
+        Long userId = (Long) req.getSession(true).getAttribute("userId");
+        User user = userService.get(userId);
+        List<Item> allItems = bucketService.getAllItems(user.getBucket().getId());
+        orderService.completeOrder(allItems, userId);
+        bucketService.clear(user.getBucket().getId());
         resp.sendRedirect(req.getContextPath() + "/servlet/getAllItems");
     }
 }
