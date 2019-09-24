@@ -4,7 +4,7 @@ import mate.academy.internetshop.generators.RoleIdGenerator;
 
 public class Role {
     private final Long id;
-    private  RoleName roleName;
+    private RoleName roleName;
 
     public Role() {
         this.id = RoleIdGenerator.getGeneratedId();

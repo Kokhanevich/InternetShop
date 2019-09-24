@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import mate.academy.internetshop.model.*;
+import mate.academy.internetshop.model.Bucket;
+import mate.academy.internetshop.model.Item;
+import mate.academy.internetshop.model.Order;
+import mate.academy.internetshop.model.Role;
+import mate.academy.internetshop.model.User;
 
 public class Storage {
     public static final List<Item> items = new ArrayList<>();
