@@ -4,10 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import mate.academy.internetshop.model.Bucket;
-import mate.academy.internetshop.model.Item;
-import mate.academy.internetshop.model.Order;
-import mate.academy.internetshop.model.User;
+import mate.academy.internetshop.model.*;
 
 public class Storage {
     public static final List<Item> items = new ArrayList<>();
@@ -32,12 +29,14 @@ public class Storage {
         user1.setPassword("111");
         user1.setSurname("Gava");
         user1.setToken(UUID.randomUUID().toString());
+        user1.addRole(Role.of("USER"));
         users.add(user1);
 
         User user2 = new User("Bob");
         user2.setLogin("Bob95");
         user2.setPassword("222");
         user2.setSurname("Gavan");
+        user2.addRole(Role.of("ADMIN"));
         user2.setToken(UUID.randomUUID().toString());
         users.add(user2);
     }
