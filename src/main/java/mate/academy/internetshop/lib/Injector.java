@@ -9,7 +9,6 @@ import java.util.Enumeration;
 import java.util.List;
 import org.apache.log4j.Logger;
 
-
 public class Injector {
     private static final Logger logger = Logger.getLogger(Injector.class);
     private static final String PROJECT_MAIN_PACKAGE = "mate.academy.internetshop";
