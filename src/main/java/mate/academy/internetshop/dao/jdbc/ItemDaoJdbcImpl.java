@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 @Dao
 public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
     private static Logger logger = Logger.getLogger(ItemDaoJdbcImpl.class);
-    private static String DB_NAME = "internetshop";
+    private static final String DB_NAME = "internetshop";
 
     public ItemDaoJdbcImpl(Connection connection) {
         super(connection);
@@ -80,7 +80,7 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
                 DB_NAME, item.getId(), item.getName(), item.getPrise(), item.getId());
         try {
             statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
+            statement.executeUpdate(query);
             return item;
         } catch (SQLException e) {
             logger.warn("Can’t update item with id=" + item.getId());
@@ -102,7 +102,7 @@ public class ItemDaoJdbcImpl extends AbstractDao<Item> implements ItemDao {
         String query = String.format("DELETE FROM %s.items WHERE item_id=%d;", DB_NAME, id);
         try {
             statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
+            statement.executeUpdate(query);
         } catch (SQLException e) {
             logger.warn("Can’t delete item with id=" + id);
         } finally {
