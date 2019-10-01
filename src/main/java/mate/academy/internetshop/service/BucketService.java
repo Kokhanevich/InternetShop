@@ -15,8 +15,6 @@ public interface BucketService {
 
     void delete(Long bucketId);
 
-    void delete(Bucket bucket);
-
     Bucket addItem(Long bucketId, Long itemId);
 
     Bucket clear(Long bucketId);

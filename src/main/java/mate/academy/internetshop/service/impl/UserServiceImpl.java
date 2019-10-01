@@ -1,15 +1,19 @@
 package mate.academy.internetshop.service.impl;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
-import mate.academy.internetshop.dao.Storage;
+import mate.academy.internetshop.dao.OrderDao;
+import mate.academy.internetshop.dao.RoleDao;
 import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.exceptions.AuthenticationException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.lib.Service;
 import mate.academy.internetshop.model.Order;
+import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.UserService;
 
@@ -19,10 +23,24 @@ public class UserServiceImpl implements UserService {
     @Inject
     private static UserDao userDao;
 
+    @Inject
+    private static OrderDao orderDao;
+
+    @Inject
+    private static RoleDao roleDao;
+
     @Override
     public User create(User user) {
+        Set<Role> rolesFromUser = user.getRoles();
+        Set<Role> rolesFromDb = new HashSet<>();
+        for (Role r: rolesFromUser) {
+            Role dbRole = roleDao.get(r.getRoleName());
+            rolesFromDb.add(dbRole);
+        }
         user.setToken(getToken());
-        return userDao.create(user);
+        User newUser = userDao.create(user);
+        roleDao.setRoles(newUser, rolesFromDb);
+        return newUser;
     }
 
     private String getToken() {
@@ -45,19 +63,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(User user) {
-        userDao.delete(user);
-    }
-
-    @Override
     public List<Order> getOrders(Long userId) {
         User user = userDao.get(userId);
-        return user.getOrders();
+        return orderDao.getOrdersForUser(user.getId());
     }
 
     @Override
     public List<User> getAll() {
-        return Storage.users;
+        return userDao.getAll();
     }
 
     @Override

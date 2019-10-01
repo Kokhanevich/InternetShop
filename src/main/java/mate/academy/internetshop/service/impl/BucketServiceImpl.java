@@ -40,34 +40,24 @@ public class BucketServiceImpl implements BucketService {
     }
 
     @Override
-    public void delete(Bucket bucket) {
-        bucketDao.delete(bucket);
-    }
-
-    @Override
     public Bucket addItem(Long bucketId, Long itemId) {
-        Bucket bucket = bucketDao.get(bucketId);
-        Item item = itemDao.get(itemId);
-        bucket.getItems().add(item);
-        return bucketDao.update(bucket);
+        return bucketDao.addItem(bucketId, itemId);
     }
 
     @Override
     public Bucket clear(Long bucketId) {
         Bucket bucket = bucketDao.get(bucketId);
-        bucket.getItems().clear();
+        bucketDao.clear(bucketId);
         return bucket;
     }
 
     @Override
     public List<Item> getAllItems(Long bucketId) {
-        Bucket bucket = bucketDao.get(bucketId);
-        return bucket.getItems();
+        return bucketDao.getAllItems(bucketId);
     }
 
     @Override
     public void deleteItem(Item item, Long bucketId) {
-        Bucket bucket = bucketDao.get(bucketId);
-        bucket.getItems().remove(item);
+        bucketDao.deleteItem(item, bucketId);
     }
 }

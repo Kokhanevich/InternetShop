@@ -1,5 +1,6 @@
 package mate.academy.internetshop.dao;
 
+import java.util.List;
 import java.util.Optional;
 import mate.academy.internetshop.exceptions.AuthenticationException;
 import mate.academy.internetshop.model.User;
@@ -14,9 +15,9 @@ public interface UserDao {
 
     void delete(Long id);
 
-    void delete(User user);
-
     User login(String login, String password) throws AuthenticationException;
 
     Optional<User> getByToken(String token);
+
+    List<User> getAll();
 }

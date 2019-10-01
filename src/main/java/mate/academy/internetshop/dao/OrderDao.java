@@ -1,5 +1,6 @@
 package mate.academy.internetshop.dao;
 
+import java.util.List;
 import mate.academy.internetshop.model.Order;
 
 public interface OrderDao {
@@ -12,5 +13,5 @@ public interface OrderDao {
 
     void delete(Long id);
 
-    void delete(Order order);
+    List<Order> getOrdersForUser(Long id);
 }
