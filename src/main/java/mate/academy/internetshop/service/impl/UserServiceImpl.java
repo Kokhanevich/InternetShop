@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
         }
         user.setToken(getToken());
         User newUser = userDao.create(user);
-        roleDao.setRoles(newUser, rolesFromDb);
+        userDao.setRoles(newUser, rolesFromDb);
         return newUser;
     }
 

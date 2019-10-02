@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import mate.academy.internetshop.dao.OrderDao;
+import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Item;
@@ -20,7 +21,7 @@ public class OrderDaoJdbcImpl extends AbstractDao<Order> implements OrderDao {
     private static Logger logger = Logger.getLogger(OrderDaoJdbcImpl.class);
 
     @Inject
-    private static UserService userService;
+    private static UserDao userDao;
 
     public OrderDaoJdbcImpl(Connection connection) {
         super(connection);
@@ -69,20 +70,19 @@ public class OrderDaoJdbcImpl extends AbstractDao<Order> implements OrderDao {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             List<Item> items = new ArrayList<>();
+            Long orderId = null;
+            Long userId = null;
             while (resultSet.next()) {
-                long orderId = resultSet.getLong("order_id");
-                long userId = resultSet.getLong("user_id");
-                String name = resultSet.getString("name");
-                double price = resultSet.getDouble("price");
-                long itemId = resultSet.getLong("item_id");
-                order = new Order();
-                order.setId(orderId);
-                order.setUser(userService.get(userId));
-                Item item = new Item(itemId);
-                item.setName(name);
-                item.setPrice(price);
+                orderId = resultSet.getLong("order_id");
+                userId = resultSet.getLong("user_id");
+                Item item = new Item(resultSet.getLong("item_id"));
+                item.setName(resultSet.getString("name"));
+                item.setPrice(resultSet.getDouble("price"));
                 items.add(item);
             }
+            order = new Order();
+            order.setId(orderId);
+            order.setUser(userDao.get(userId));
             order.setItems(items);
         } catch (SQLException e) {
             logger.error("Can’t get order with id=" + id, e);

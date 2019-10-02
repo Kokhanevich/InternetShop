@@ -1,7 +1,7 @@
 package mate.academy.internetshop.model;
 
 public class Role {
-    private  Long id;
+    private Long id;
     private RoleName roleName;
 
     public Role() {

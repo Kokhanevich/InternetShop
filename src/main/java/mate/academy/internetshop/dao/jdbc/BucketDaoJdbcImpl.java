@@ -7,12 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import mate.academy.internetshop.dao.BucketDao;
+import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Bucket;
 import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.model.User;
-import mate.academy.internetshop.service.UserService;
 import org.apache.log4j.Logger;
 
 @Dao
@@ -20,7 +20,7 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
     private static Logger logger = Logger.getLogger(BucketDaoJdbcImpl.class);
 
     @Inject
-    private static UserService userService;
+    private static UserDao userDao;
 
     public BucketDaoJdbcImpl(Connection connection) {
         super(connection);
@@ -28,12 +28,11 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
 
     @Override
     public Bucket create(Bucket bucket) {
-        Long userId = bucket.getUser().getId();
         String addBucketQuery = "INSERT INTO buckets (user_id) VALUES (?);";
         try (PreparedStatement statement =
                     connection.prepareStatement(addBucketQuery,
                             PreparedStatement.RETURN_GENERATED_KEYS)) {
-            statement.setLong(1, userId);
+            statement.setLong(1, bucket.getUser().getId());
             statement.executeUpdate();
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
@@ -53,7 +52,6 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
     @Override
     public Bucket get(Long bucketId) {
         List<Item> items = new ArrayList<>();
-        Bucket bucket;
         String getBucketQuery = "SELECT * FROM buckets WHERE bucket_id=?;";
         try (PreparedStatement statement =
                     connection.prepareStatement(getBucketQuery,
@@ -61,16 +59,15 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
             statement.setLong(1, bucketId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                long bucketsId = resultSet.getLong("bucket_id");
-                long userId = resultSet.getLong("user_id");
-                bucket = new Bucket();
+                Long userId = resultSet.getLong("user_id");
+                Bucket bucket = new Bucket();
                 bucket.setId(bucketId);
-                User user = userService.get(userId);
+                User user = userDao.get(userId);
                 bucket.setUser(user);
                 return bucket;
             }
         } catch (SQLException e) {
-            logger.warn("Can’t get bucket with id=" + bucketId);
+            logger.error("Can’t get bucket with id=" + bucketId);
         }
         return null;
     }
@@ -83,7 +80,7 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
             statement.setLong(2, bucket.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.warn("Can’t update bucket with id=" + bucket.getId());
+            logger.error("Can’t update bucket with id=" + bucket.getId());
         }
         return bucket;
     }

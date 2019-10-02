@@ -6,7 +6,6 @@ public class Item {
     private Double price;
 
     public Item() {
-        //this.id = ItemIdGenerator.getGeneratedId();
     }
 
     public Item(Long id) {

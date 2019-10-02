@@ -4,11 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Set;
 import mate.academy.internetshop.dao.RoleDao;
 import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.model.Role;
-import mate.academy.internetshop.model.User;
 import org.apache.log4j.Logger;
 
 @Dao
@@ -38,19 +36,5 @@ public class RoleDaoJdbcImpl extends AbstractDao<Role> implements RoleDao {
             logger.error("Can’t get role with name= " + roleName, e);
         }
         return null;
-    }
-
-    @Override
-    public void setRoles(User newUser, Set<Role> rolesFromDb) {
-        for (Role r: rolesFromDb) {
-            String setRole = "INSERT INTO users_roles (user_id, role_id) VALUES (?, ?) ";
-            try (PreparedStatement statement = connection.prepareStatement(setRole)) {
-                statement.setLong(1, newUser.getId());
-                statement.setLong(2, r.getId());
-                statement.executeUpdate();
-            } catch (SQLException e) {
-                logger.error("Can’t set role with name= " + r.getRoleName().toString(), e);
-            }
-        }
     }
 }

@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
+import mate.academy.internetshop.dao.BucketDao;
 import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.exceptions.AuthenticationException;
 import mate.academy.internetshop.lib.Dao;
@@ -14,7 +17,6 @@ import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Bucket;
 import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
-import mate.academy.internetshop.service.BucketService;
 import org.apache.log4j.Logger;
 
 @Dao
@@ -22,7 +24,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     private static Logger logger = Logger.getLogger(UserDaoJdbcImpl.class);
 
     @Inject
-    private static BucketService bucketService;
+    private static BucketDao bucketDao;
 
     public UserDaoJdbcImpl(Connection connection) {
         super(connection);
@@ -46,7 +48,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             Long userId = resultSet.getLong(1);
             user.setId(userId);
             Bucket bucket = new Bucket(user);
-            bucketService.create(bucket);
+            bucketDao.create(bucket);
         } catch (SQLException e) {
             logger.warn("Can’t create user= " + user.getLogin());
         }
@@ -63,26 +65,19 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                long userId = resultSet.getLong("user_id");
-                String name = resultSet.getString("name");
-                String surname = resultSet.getString("surname");
-                String login = resultSet.getString("login");
-                String password = resultSet.getString("password");
-                String token = resultSet.getString("token");
-                Long bucketId = resultSet.getLong("bucket_id");
-                User user = new User(userId);
-                user.setName(name);
-                user.setSurname(surname);
-                user.setLogin(login);
-                user.setPassword(password);
-                user.setToken(token);
+                User user = new User(resultSet.getLong("user_id"));
+                user.setName(resultSet.getString("name"));
+                user.setSurname(resultSet.getString("surname"));
+                user.setLogin(resultSet.getString("login"));
+                user.setPassword(resultSet.getString("password"));
+                user.setToken(resultSet.getString("token"));
                 Bucket bucket = new Bucket();
-                bucket.setId(bucketId);
+                bucket.setId(resultSet.getLong("bucket_id"));
                 user.setBucket(bucket);
                 return user;
             }
         } catch (SQLException e) {
-            logger.warn("Can’t get user with id=" + id);
+            logger.error("Can’t get user with id=" + id);
         }
         return null;
     }
@@ -103,7 +98,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             statement.executeUpdate();
             return user;
         } catch (SQLException e) {
-            logger.warn("Can’t update user with id=" + user.getId());
+            logger.error("Can’t update user with id=" + user.getId());
         }
         return null;
     }
@@ -127,18 +122,14 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                Long id = resultSet.getLong("user_id");
-                String name = resultSet.getString("name");
-                String passwordDb = resultSet.getString("password");
-                String token = resultSet.getString("token");
-                if (!passwordDb.equals(password)) {
+                if (!password.equals(resultSet.getString("password"))) {
                     throw new AuthenticationException("Incorrect login or password!");
                 }
-                User user = new User(id);
-                user.setName(name);
+                User user = new User(resultSet.getLong("user_id"));
+                user.setName(resultSet.getString("name"));
                 user.setLogin(login);
                 user.setPassword(password);
-                user.setToken(token);
+                user.setToken(resultSet.getString("token"));
                 return user;
             }
         } catch (SQLException e) {
@@ -154,14 +145,10 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             statement.setString(1, token);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                Long id = resultSet.getLong("user_id");
-                String login = resultSet.getString("login");
-                String password = resultSet.getString("password");
-                String name = resultSet.getString("name");
-                User user = new User(id);
-                user.setName(name);
-                user.setLogin(login);
-                user.setPassword(password);
+                User user = new User(resultSet.getLong("user_id"));
+                user.setName(resultSet.getString("name"));
+                user.setLogin(resultSet.getString("login"));
+                user.setPassword(resultSet.getString("password"));
                 user.setToken(token);
                 user.addRole(Role.of("USER"));
                 return Optional.of(user);
@@ -179,19 +166,29 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
         try (PreparedStatement statement = connection.prepareStatement(getAllUsersQuery)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                long userId = resultSet.getLong("user_id");
-                String login = resultSet.getString("login");
-                String name = resultSet.getString("name");
-                String surname = resultSet.getString("surname");
-                User user = new User(userId);
-                user.setLogin(login);
-                user.setName(name);
-                user.setSurname(surname);
+                User user = new User(resultSet.getLong("user_id"));
+                user.setLogin(resultSet.getString("login"));
+                user.setName(resultSet.getString("name"));
+                user.setSurname(resultSet.getString("surname"));
                 users.add(user);
             }
         } catch (SQLException e) {
             logger.warn("Can’t create item list", e);
         }
         return users;
+    }
+
+    @Override
+    public void setRoles(User newUser, Set<Role> rolesFromDb) {
+        for (Role r: rolesFromDb) {
+            String setRole = "INSERT INTO users_roles (user_id, role_id) VALUES (?, ?) ";
+            try (PreparedStatement statement = connection.prepareStatement(setRole)) {
+                statement.setLong(1, newUser.getId());
+                statement.setLong(2, r.getId());
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                logger.error("Can’t set role with name= " + r.getRoleName().toString(), e);
+            }
+        }
     }
 }
