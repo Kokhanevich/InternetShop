@@ -3,16 +3,23 @@ package mate.academy.internetshop.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import mate.academy.internetshop.generators.OrderIdGenerator;
-
 public class Order {
     private Long id;
     private User user;
     private List<Item> items;
 
     public Order() {
-        this.id = OrderIdGenerator.getGeneratedId();
         this.items = new ArrayList<>();
+    }
+
+    public Order(Long id, User user, List<Item> items) {
+        this.id = id;
+        this.user = user;
+        this.items = items;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getId() {

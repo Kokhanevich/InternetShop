@@ -32,7 +32,7 @@ Welcome
                 <c:out value="${item.name}" />
             </td>
             <td>
-                <c:out value="${item.prise}" />
+                <c:out value="${item.price}" />
             </td>
             <td>
                 <a href="/InternetShopNew_war_exploded/servlet/deleteItem?item_id=${item.id}">DELETE<a/>
