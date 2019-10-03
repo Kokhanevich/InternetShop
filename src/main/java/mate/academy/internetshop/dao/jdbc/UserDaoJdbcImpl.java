@@ -17,6 +17,7 @@ import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Bucket;
 import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
+import mate.academy.internetshop.util.HashUtil;
 import org.apache.log4j.Logger;
 
 @Dao
@@ -33,15 +34,19 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     @Override
     public User create(User user) {
         String createUserQuery =
-                "INSERT INTO users (name, surname, login, password, token) VALUES (?, ?, ?, ?, ?);";
+                "INSERT INTO users (name, surname, login, password, token, salt) "
+                        + "VALUES (?, ?, ?, ?, ?, ?);";
         try (PreparedStatement statement =
                     connection.prepareStatement(createUserQuery,
                             PreparedStatement.RETURN_GENERATED_KEYS)) {
+            byte[] salt = HashUtil.getSalt();
+            String hashPassword = HashUtil.hashPassword(user.getPassword(), salt);
             statement.setString(1, user.getName());
             statement.setString(2, user.getSurname());
             statement.setString(3, user.getLogin());
-            statement.setString(4, user.getPassword());
+            statement.setString(4, hashPassword);
             statement.setString(5, user.getToken());
+            statement.setBytes(6, salt);
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
@@ -116,13 +121,15 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public User login(String login, String password) throws AuthenticationException {
-        String selectUserQuery = "SELECT * FROM users where login=? AND password=?;";
+        String selectUserQuery = "SELECT * FROM users where login=?;";
         try (PreparedStatement statement = connection.prepareStatement(selectUserQuery)) {
             statement.setString(1, login);
-            statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                if (!password.equals(resultSet.getString("password"))) {
+                byte [] salt = resultSet.getBytes("salt");
+                if (!login.equals(resultSet.getString("login"))
+                        || !HashUtil.hashPassword(password, salt)
+                        .equals(resultSet.getString("password"))) {
                     throw new AuthenticationException("Incorrect login or password!");
                 }
                 User user = new User(resultSet.getLong("user_id"));
@@ -136,6 +143,10 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             logger.warn("Can’t get user with login=" + login);
         }
         throw new AuthenticationException("Can’t get user with login = " + login);
+    }
+
+    private static boolean isValid(String password, byte[] salt) {
+        return false;
     }
 
     @Override

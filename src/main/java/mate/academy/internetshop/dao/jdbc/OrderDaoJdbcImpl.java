@@ -13,7 +13,6 @@ import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Item;
 import mate.academy.internetshop.model.Order;
-import mate.academy.internetshop.service.UserService;
 import org.apache.log4j.Logger;
 
 @Dao

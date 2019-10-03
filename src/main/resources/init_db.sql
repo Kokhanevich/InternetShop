@@ -98,16 +98,6 @@ CREATE TABLE `roles` (
 INSERT INTO roles (name) values ('USER');
 INSERT INTO roles (name) values ('ADMIN');
 
-CREATE TABLE `users` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) DEFAULT NULL,
-  `surname` varchar(45) DEFAULT NULL,
-  `login` varchar(45) NOT NULL,
-  `password` varchar(45) NOT NULL,
-  `token` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
-
 CREATE TABLE `users_roles` (
   `users_roles_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -122,4 +112,15 @@ CREATE TABLE `users_roles` (
   FOREIGN KEY (`user_id`)
   REFERENCES `users` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `users` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) DEFAULT NULL,
+  `surname` varchar(45) DEFAULT NULL,
+  `login` varchar(45) NOT NULL,
+  `password` varchar(500) NOT NULL,
+  `token` varchar(255) DEFAULT NULL,
+  `salt` blob,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
