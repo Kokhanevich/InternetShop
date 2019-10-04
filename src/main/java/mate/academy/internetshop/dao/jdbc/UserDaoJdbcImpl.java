@@ -145,10 +145,6 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
         throw new AuthenticationException("Can’t get user with login = " + login);
     }
 
-    private static boolean isValid(String password, byte[] salt) {
-        return false;
-    }
-
     @Override
     public Optional<User> getByToken(String token) {
         String getTokenQuery = "SELECT * FROM users WHERE token=?;";
