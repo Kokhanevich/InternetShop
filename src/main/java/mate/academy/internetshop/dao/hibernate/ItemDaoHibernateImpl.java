@@ -36,7 +36,6 @@ public class ItemDaoHibernateImpl implements ItemDao {
             Item item = session.get(Item.class, id);
             return item;
         }
-
     }
 
     @Override
