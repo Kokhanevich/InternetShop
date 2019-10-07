@@ -1,5 +1,7 @@
 package mate.academy.internetshop.web.filter;
 
+import java.io.IOException;
+import java.util.Optional;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -8,8 +10,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
-import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.User;
