@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import mate.academy.internetshop.dao.RoleDao;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
@@ -16,6 +17,9 @@ import mate.academy.internetshop.service.UserService;
 public class RegistrationController extends HttpServlet {
     @Inject
     private static UserService userService;
+
+    @Inject
+    private static RoleDao roleDao;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -31,7 +35,8 @@ public class RegistrationController extends HttpServlet {
         newUser.setPassword(req.getParameter("psw"));
         newUser.setName(req.getParameter("user_name"));
         newUser.setSurname(req.getParameter("user_surname"));
-        newUser.addRole(Role.of("USER"));
+        Role userRole = roleDao.get(Role.RoleName.USER);
+        newUser.addRole(userRole);
         User user = userService.create(newUser);
 
         HttpSession session = req.getSession(true);
