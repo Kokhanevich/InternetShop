@@ -1,7 +1,7 @@
 CREATE SCHEMA `internetshop` DEFAULT CHARACTER SET utf8 ;
 
 CREATE TABLE `internetshop`.`items` (
-  `item_id` INT NOT NULL AUTO_INCREMENT,
+  `item_id` bigint(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
   `price` DECIMAL(6,2) NOT NULL,
   PRIMARY KEY (`item_id`));
@@ -9,9 +9,9 @@ CREATE TABLE `internetshop`.`items` (
   INSERT INTO `internetshop`.`items` (`name`, `price`) VALUES ('Nokia 5800', '3000');
 
   CREATE TABLE `internetshop`.`users_roles` (
-  `users_roles_id` INT NOT NULL AUTO_INCREMENT,
-  `user_id` INT NOT NULL,
-  `role_id` INT NOT NULL,
+  `users_roles_id` bigint(11) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(11) NOT NULL,
+  `role_id` bigint(11) NOT NULL,
   PRIMARY KEY (`users_roles_id`),
   INDEX `user_role_user_fk_idx` (`user_id` ASC) VISIBLE,
   INDEX `user_role_role_fk_idx` (`role_id` ASC) VISIBLE,
@@ -27,8 +27,8 @@ CREATE TABLE `internetshop`.`items` (
     ON UPDATE NO ACTION);
 
 CREATE TABLE `buckets` (
-  `bucket_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
+  `bucket_id` bigint(11) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(11) NOT NULL,
   PRIMARY KEY (`bucket_id`),
   UNIQUE KEY `user_id_UNIQUE` (`user_id`),
   KEY `user_id_fk_idx` (`user_id`),
@@ -40,9 +40,9 @@ CREATE TABLE `buckets` (
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `buckets_items` (
-  `buckets_items_id` int(11) NOT NULL AUTO_INCREMENT,
-  `bucket_id` int(11) NOT NULL,
-  `item_id` int(11) NOT NULL,
+  `buckets_items_id` bigint(11) NOT NULL AUTO_INCREMENT,
+  `bucket_id` bigint(11) NOT NULL,
+  `item_id` bigint(11) NOT NULL,
   PRIMARY KEY (`buckets_items_id`),
   KEY `bucket_id_fk_idx` (`bucket_id`),
   KEY `item_id_fk_idx` (`item_id`),
@@ -59,8 +59,8 @@ CREATE TABLE `buckets_items` (
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `orders` (
-  `order_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
+  `order_id` bigint(11) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(11) NOT NULL,
   PRIMARY KEY (`order_id`),
   KEY `orders_users_fk_idx` (`user_id`),
   CONSTRAINT `orders_users_fk`
@@ -71,9 +71,9 @@ CREATE TABLE `orders` (
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `orders_items` (
-  `orders_items_id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_id` int(11) NOT NULL,
-  `item_id` int(11) NOT NULL,
+  `orders_items_id` bigint(11) NOT NULL AUTO_INCREMENT,
+  `order_id` bigint(11) NOT NULL,
+  `item_id` bigint(11) NOT NULL,
   PRIMARY KEY (`orders_items_id`),
   KEY `orders_items_orders_fk_idx` (`order_id`),
   KEY `orders_items_items_fk_idx` (`item_id`),
@@ -90,7 +90,7 @@ CREATE TABLE `orders_items` (
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `roles` (
-  `role_id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_id` bigint(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   PRIMARY KEY (`role_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
@@ -99,9 +99,9 @@ INSERT INTO roles (name) values ('USER');
 INSERT INTO roles (name) values ('ADMIN');
 
 CREATE TABLE `users_roles` (
-  `users_roles_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `role_id` int(11) NOT NULL,
+  `users_roles_id` bigint(11) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(11) NOT NULL,
+  `role_id` bigint(11) NOT NULL,
   PRIMARY KEY (`users_roles_id`),
   KEY `user_role_user_fk_idx` (`user_id`),
   KEY `user_role_role_fk_idx` (`role_id`),
@@ -114,7 +114,7 @@ CREATE TABLE `users_roles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `users` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   `surname` varchar(45) DEFAULT NULL,
   `login` varchar(45) NOT NULL,

@@ -5,11 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import mate.academy.internetshop.dao.BucketDao;
+import mate.academy.internetshop.dao.RoleDao;
 import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.exceptions.AuthenticationException;
 import mate.academy.internetshop.lib.Dao;
@@ -26,6 +28,9 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
 
     @Inject
     private static BucketDao bucketDao;
+
+    @Inject
+    private static RoleDao roleDao;
 
     public UserDaoJdbcImpl(Connection connection) {
         super(connection);
@@ -54,6 +59,13 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             user.setId(userId);
             Bucket bucket = new Bucket(user);
             bucketDao.create(bucket);
+            Set<Role> rolesFromUser = user.getRoles();
+            Set<Role> rolesFromDb = new HashSet<>();
+            for (Role r: rolesFromUser) {
+                Role dbRole = roleDao.get(r.getRoleName());
+                rolesFromDb.add(dbRole);
+            }
+            setRoles(user, rolesFromDb);
         } catch (SQLException e) {
             logger.warn("Can’t create user= " + user.getLogin());
         }
@@ -185,8 +197,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
         return users;
     }
 
-    @Override
-    public void setRoles(User newUser, Set<Role> rolesFromDb) {
+    private void setRoles(User newUser, Set<Role> rolesFromDb) {
         for (Role r: rolesFromDb) {
             String setRole = "INSERT INTO users_roles (user_id, role_id) VALUES (?, ?) ";
             try (PreparedStatement statement = connection.prepareStatement(setRole)) {

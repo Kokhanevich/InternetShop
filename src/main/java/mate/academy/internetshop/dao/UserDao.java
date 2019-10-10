@@ -2,10 +2,8 @@ package mate.academy.internetshop.dao;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import mate.academy.internetshop.exceptions.AuthenticationException;
-import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
 
 public interface UserDao {
@@ -23,6 +21,4 @@ public interface UserDao {
     Optional<User> getByToken(String token);
 
     List<User> getAll();
-
-    void setRoles(User newUser, Set<Role> rolesFromDb);
 }
