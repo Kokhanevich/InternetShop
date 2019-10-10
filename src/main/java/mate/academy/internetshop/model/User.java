@@ -1,6 +1,5 @@
 package mate.academy.internetshop.model;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,9 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name = "users")
@@ -26,7 +25,7 @@ public class User {
     @Column(name = "user_id")
     private Long id;
     private String name;
-    @Transient
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Order> orders;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Bucket bucket;
@@ -43,8 +42,7 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     public User() {
-        this.orders = new ArrayList<>();
-        this.bucket = new Bucket(this);
+
     }
 
     public User(String name) {

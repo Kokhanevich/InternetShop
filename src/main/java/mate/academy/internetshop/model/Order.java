@@ -1,15 +1,43 @@
 package mate.academy.internetshop.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "orders")
 public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_id")
     private Long id;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
+    @ManyToMany(cascade = {
+            CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.REFRESH,
+            CascadeType.PERSIST},
+            fetch = FetchType.EAGER)
+    @JoinTable(name = "orders_items",
+            joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "item_id"))
     private List<Item> items;
 
     public Order() {
-        this.items = new ArrayList<>();
+
     }
 
     public Order(Long id, User user, List<Item> items) {

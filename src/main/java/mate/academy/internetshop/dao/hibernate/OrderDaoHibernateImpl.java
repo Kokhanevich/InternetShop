@@ -1,27 +1,30 @@
 package mate.academy.internetshop.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
-import mate.academy.internetshop.dao.ItemDao;
+
+import mate.academy.internetshop.dao.OrderDao;
 import mate.academy.internetshop.lib.Dao;
-import mate.academy.internetshop.model.Item;
+import mate.academy.internetshop.model.Order;
 import mate.academy.internetshop.util.HibernateUtil;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 @Dao
-public class ItemDaoHibernateImpl implements ItemDao {
-    private static Logger logger = Logger.getLogger(ItemDaoHibernateImpl.class);
+public class OrderDaoHibernateImpl implements OrderDao {
+    private static Logger logger = Logger.getLogger(OrderDaoHibernateImpl.class);
 
     @Override
-    public Item create(Item item) {
-        Long itemId = null;
+    public Order create(Order order) {
+        Long orderId = null;
         Transaction transaction = null;
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            itemId = (Long) session.save(item);
+            orderId = (Long) session.save(order);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -32,29 +35,29 @@ public class ItemDaoHibernateImpl implements ItemDao {
                 session.close();
             }
         }
-        item.setId(itemId);
-        return item;
+        order.setId(orderId);
+        return order;
     }
 
     @Override
-    public Item get(Long id) {
+    public Order get(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession();) {
-            Item item = session.get(Item.class, id);
-            return item;
+            Order order = session.get(Order.class, id);
+            return order;
         }
     }
 
     @Override
-    public Item update(Item item) {
+    public Order update(Order order) {
         Transaction transaction = null;
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.update(item);
+            session.update(order);
             transaction.commit();
         } catch (Exception e) {
-            logger.error("Can't update Item " + item, e);
+            logger.error("Can't update order " + order, e);
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -63,21 +66,21 @@ public class ItemDaoHibernateImpl implements ItemDao {
                 session.close();
             }
         }
-        return item;
+        return order;
     }
 
     @Override
     public void delete(Long id) {
-        Item item = get(id);
+        Order order = get(id);
         Transaction transaction = null;
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.delete(item);
+            session.delete(order);
             transaction.commit();
         } catch (Exception e) {
-            logger.error("Can't delete Item " + item, e);
+            logger.error("Can't delete order " + order, e);
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -89,9 +92,13 @@ public class ItemDaoHibernateImpl implements ItemDao {
     }
 
     @Override
-    public List<Item> getAll() {
+    public List<Order> getOrdersForUser(Long id) {
+        List<Order> orders = new ArrayList<>();
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createCriteria(Item.class).list();
+            Query query = session.createQuery("from Order where user.id=:id");
+            query.setParameter("id", id);
+            orders = query.getResultList();
         }
+        return orders;
     }
 }

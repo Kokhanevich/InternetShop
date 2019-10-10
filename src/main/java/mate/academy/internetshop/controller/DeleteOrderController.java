@@ -7,8 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mate.academy.internetshop.lib.Inject;
-import mate.academy.internetshop.model.Order;
-import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.OrderService;
 import mate.academy.internetshop.service.UserService;
 
@@ -23,11 +21,7 @@ public class DeleteOrderController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         String orderId = req.getParameter("order_id");
-        Order order = orderService.get(Long.valueOf(orderId));
-        Long userId = (Long) req.getSession(true).getAttribute("userId");
-        User user = userService.get(userId);
         orderService.delete(Long.valueOf(orderId));
-        user.getOrders().remove(order);
         resp.sendRedirect(req.getContextPath() + "/servlet/getOrders");
     }
 }
