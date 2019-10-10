@@ -2,14 +2,12 @@ package mate.academy.internetshop.dao.hibernate;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import mate.academy.internetshop.dao.BucketDao;
 import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.exceptions.AuthenticationException;
 import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Bucket;
-import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.util.HashUtil;
 import mate.academy.internetshop.util.HibernateUtil;
@@ -29,7 +27,9 @@ public class UserDaoHibernateImpl implements UserDao {
     public User create(User user) {
         Long userId = null;
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             byte[] salt = HashUtil.getSalt();
             user.setPassword(HashUtil.hashPassword(user.getPassword(), salt));
@@ -39,6 +39,10 @@ public class UserDaoHibernateImpl implements UserDao {
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
             }
         }
         user.setId(userId);
@@ -59,7 +63,9 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public User update(User user) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.update(user);
             transaction.commit();
@@ -67,6 +73,10 @@ public class UserDaoHibernateImpl implements UserDao {
             logger.error("Can't update user " + user, e);
             if (transaction != null) {
                 transaction.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
             }
         }
         return user;
@@ -76,7 +86,9 @@ public class UserDaoHibernateImpl implements UserDao {
     public void delete(Long id) {
         User user = get(id);
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.delete(user);
             transaction.commit();
@@ -84,6 +96,10 @@ public class UserDaoHibernateImpl implements UserDao {
             logger.error("Can't delete user " + user, e);
             if (transaction != null) {
                 transaction.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
             }
         }
     }
@@ -116,10 +132,5 @@ public class UserDaoHibernateImpl implements UserDao {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createCriteria(User.class).list();
         }
-    }
-
-    @Override
-    public void setRoles(User newUser, Set<Role> rolesFromDb) {
-
     }
 }
