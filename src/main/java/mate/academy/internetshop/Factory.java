@@ -11,16 +11,18 @@ import mate.academy.internetshop.dao.RoleDao;
 import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.dao.hibernate.BucketDaoHibernateImpl;
 import mate.academy.internetshop.dao.hibernate.ItemDaoHibernateImpl;
+import mate.academy.internetshop.dao.hibernate.OrderDaoHibernateImpl;
 import mate.academy.internetshop.dao.hibernate.RoleDaoHibernateImpl;
 import mate.academy.internetshop.dao.hibernate.UserDaoHibernateImpl;
-import mate.academy.internetshop.dao.jdbc.OrderDaoJdbcImpl;
 import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.ItemService;
 import mate.academy.internetshop.service.OrderService;
+import mate.academy.internetshop.service.RoleService;
 import mate.academy.internetshop.service.UserService;
 import mate.academy.internetshop.service.impl.BucketServiceImpl;
 import mate.academy.internetshop.service.impl.ItemServiceImpl;
 import mate.academy.internetshop.service.impl.OrderServiceImpl;
+import mate.academy.internetshop.service.impl.RoleServiceImpl;
 import mate.academy.internetshop.service.impl.UserServiceImpl;
 import org.apache.log4j.Logger;
 
@@ -49,6 +51,7 @@ public class Factory {
     private static BucketService bucketServiceInstance;
     private static ItemService itemServiceInstance;
     private static OrderService orderServiceInstance;
+    private static RoleService roleServiceInstance;
 
     private Factory() {
 
@@ -84,7 +87,7 @@ public class Factory {
 
     public static OrderDao getOrderDaoInstance() {
         if (orderDaoInstance == null) {
-            orderDaoInstance = new OrderDaoJdbcImpl(connection);
+            orderDaoInstance = new OrderDaoHibernateImpl();
         }
         return orderDaoInstance;
     }
@@ -115,5 +118,12 @@ public class Factory {
             orderServiceInstance = new OrderServiceImpl();
         }
         return orderServiceInstance;
+    }
+
+    public static RoleService getRoleServiceInstance() {
+        if (roleServiceInstance == null) {
+            roleServiceInstance = new RoleServiceImpl();
+        }
+        return roleServiceInstance;
     }
 }

@@ -1,6 +1,5 @@
 package mate.academy.internetshop.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,7 +21,12 @@ public class Bucket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bucket_id")
     private Long id;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {
+            CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.REFRESH,
+            CascadeType.PERSIST},
+            fetch = FetchType.EAGER)
     @JoinTable(name = "buckets_items",
             joinColumns = @JoinColumn(name = "bucket_id", referencedColumnName = "bucket_id"),
             inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "item_id"))
@@ -32,7 +36,7 @@ public class Bucket {
     private User user;
 
     public Bucket() {
-        this.items = new ArrayList<>();
+
     }
 
     public Bucket(User user) {

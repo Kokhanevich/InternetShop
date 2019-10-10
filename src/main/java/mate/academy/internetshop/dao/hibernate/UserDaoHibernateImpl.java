@@ -47,7 +47,7 @@ public class UserDaoHibernateImpl implements UserDao {
         }
         user.setId(userId);
         Bucket bucket = new Bucket(user);
-        bucket.setUser(user);
+        //bucket.setUser(user);
         bucketDao.create(bucket);
         return user;
     }
