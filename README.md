@@ -32,9 +32,9 @@ Install and configure database management system.
 
 Run all queries from init_db.sql file in your db.
 
-Change login and password in src.main.java.mate.academy.internetshop.Factory class .
+Change login and password in src.main.java.mate.academy.internetshop.Factory class
 
-Change login and password in src.main.java.resources.hibernate.cfg.xml .
+Change login and password in src.main.java.resources.hibernate.cfg.xml
 
 Write correct path to your log file in resources.log4j.properties.
 
