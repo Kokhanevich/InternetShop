@@ -6,7 +6,7 @@
 
     <servlet>
         <servlet-name>index</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.IndexController</servlet-class>
+        <servlet-class>kokhanevych.internetshop.controller.IndexController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>index</servlet-name>
@@ -15,7 +15,7 @@
 
     <servlet>
         <servlet-name>getAllUsers</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.GetAllUsersController</servlet-class>
+        <servlet-class>kokhanevych.internetshop.controller.GetAllUsersController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>getAllUsers</servlet-name>
@@ -24,7 +24,7 @@
 
     <servlet>
         <servlet-name>registration</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.RegistrationController</servlet-class>
+        <servlet-class>kokhanevych.internetshop.controller.RegistrationController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>registration</servlet-name>
@@ -33,7 +33,7 @@
 
     <servlet>
         <servlet-name>deleteUser</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.DeleteUserController</servlet-class>
+        <servlet-class>kokhanevych.internetshop.controller.DeleteUserController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>deleteUser</servlet-name>
@@ -42,7 +42,7 @@
 
     <servlet>
         <servlet-name>getAllItems</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.GetAllItemsController</servlet-class>
+        <servlet-class>kokhanevych.internetshop.controller.GetAllItemsController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>getAllItems</servlet-name>
@@ -51,7 +51,7 @@
 
     <servlet>
         <servlet-name>addToBucket</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.AddItemToBucketController</servlet-class>
+        <servlet-class>kokhanevych.internetshop.controller.AddItemToBucketController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>addToBucket</servlet-name>
@@ -60,7 +60,7 @@
 
     <servlet>
         <servlet-name>deleteItem</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.DeleteItemFromBucketController</servlet-class>
+        <servlet-class>kokhanevych.internetshop.controller.DeleteItemFromBucketController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>deleteItem</servlet-name>
@@ -69,7 +69,7 @@
 
     <servlet>
         <servlet-name>getBucket</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.GetBucketController</servlet-class>
+        <servlet-class>kokhanevych.internetshop.controller.GetBucketController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>getBucket</servlet-name>
@@ -78,7 +78,7 @@
 
     <servlet>
         <servlet-name>addOrder</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.CompleteOrderController</servlet-class>
+        <servlet-class>kokhanevych.internetshop.controller.CompleteOrderController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>addOrder</servlet-name>
@@ -87,7 +87,7 @@
 
     <servlet>
         <servlet-name>getOrders</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.GetAllOrdersController</servlet-class>
+        <servlet-class>kokhanevych.internetshop.controller.GetAllOrdersController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>getOrders</servlet-name>
@@ -96,7 +96,7 @@
 
     <servlet>
         <servlet-name>deleteOrder</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.DeleteOrderController</servlet-class>
+        <servlet-class>kokhanevych.internetshop.controller.DeleteOrderController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>deleteOrder</servlet-name>
@@ -105,7 +105,7 @@
 
     <servlet>
         <servlet-name>loginController</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.LoginController</servlet-class>
+        <servlet-class>kokhanevych.internetshop.controller.LoginController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>loginController</servlet-name>
@@ -114,7 +114,7 @@
 
     <servlet>
         <servlet-name>injectData</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.InjectDataController</servlet-class>
+        <servlet-class>kokhanevych.internetshop.controller.InjectDataController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>injectData</servlet-name>
@@ -123,7 +123,7 @@
 
     <servlet>
         <servlet-name>logoutController</servlet-name>
-        <servlet-class>mate.academy.internetshop.controller.LogoutController</servlet-class>
+        <servlet-class>kokhanevych.internetshop.controller.LogoutController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>logoutController</servlet-name>
@@ -131,7 +131,7 @@
     </servlet-mapping>
     <filter>
         <filter-name>Auth-filter</filter-name>
-        <filter-class>mate.academy.internetshop.web.filter.AuthenticationFilter</filter-class>
+        <filter-class>kokhanevych.internetshop.web.filter.AuthenticationFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>Auth-filter</filter-name>
@@ -140,7 +140,7 @@
 
     <filter>
         <filter-name>Author-filter</filter-name>
-        <filter-class>mate.academy.internetshop.web.filter.AuthorizationFilter</filter-class>
+        <filter-class>kokhanevych.internetshop.web.filter.AuthorizationFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>Author-filter</filter-name>
@@ -148,6 +148,6 @@
     </filter-mapping>
 
     <listener>
-        <listener-class>mate.academy.internetshop.controller.InjectInitializer</listener-class>
+        <listener-class>kokhanevych.internetshop.controller.InjectInitializer</listener-class>
     </listener>
 </web-app>

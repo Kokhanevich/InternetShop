@@ -1,6 +1,6 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 
-<jsp:useBean id="users" scope="request" type="java.util.List<mate.academy.internetshop.model.User>"/>
+<jsp:useBean id="users" scope="request" type="java.util.List<kokhanevych.internetshop.model.User>"/>
 <jsp:useBean id="greeting" scope="request" type="java.lang.String"/>
 <%--
   Created by IntelliJ IDEA.
